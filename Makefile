@@ -5,6 +5,7 @@ LOCATION				= canadacentral
 CONTAINERAPPS_NAME			= $(PREFIX_NAME)-container-apps2
 ENVIRONMENT_NAME			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/managedEnvironments --query '[0].name' -o tsv)
 #ENVIRONMENT_ID				?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/managedEnvironments --query '[0].id' -o tsv)
+CONTAINERAPPS_ID			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/containerApps --query '[0].id' -o tsv)
 
 #MIN_REPLICAS				= 1
 #TRANSPORT				= http2
@@ -49,4 +50,8 @@ clean:
 	--location "$(LOCATION)"
 
 env-list:
-	@echo $(ENVIRONMENT_ID)
+	@echo $(ENVIRONMENT_NAME)
+
+show-endpoint:
+	az rest -u https://management.azure.com$(CONTAINERAPPS_ID)?api-version=2022-01-01-preview | \
+	jq -r '.properties.latestRevisionFqdn'
