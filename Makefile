@@ -46,8 +46,7 @@ deploy-apps-demo:	## deploy demo app
 
 clean:
 	az group delete \
-	--name $(RESOURCE_GROUP) \
-	--location "$(LOCATION)"
+	--name $(RESOURCE_GROUP)
 
 env-list:
 	@echo $(ENVIRONMENT_NAME)
