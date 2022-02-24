@@ -29,13 +29,12 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-// https://github.com/Azure/azure-rest-api-specs/blob/main/specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/KubeEnvironments.json
-resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
+// https://github.com/Azure/azure-rest-api-specs/blob/Microsoft.App-2022-01-01-preview/specification/app/resource-manager/Microsoft.App/preview/2022-01-01-preview/ManagedEnvironments.json
+resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   name: environmentName
   location: location
   properties: {
-    environmentType:'managed'
-    internalLoadBalancerEnabled: true
+    daprAIInstrumentationKey:appInsights.properties.InstrumentationKey
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
@@ -43,10 +42,13 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
-    containerAppsConfiguration: {
-      daprAIInstrumentationKey: appInsights.properties.InstrumentationKey
-      controlPlaneSubnetResourceId:controlPlaneSubnetId
-      appSubnetResourceId: applicationsSubnetId
+    vnetConfiguration: {
+      internal: false
+      infrastructureSubnetId:controlPlaneSubnetId
+      runtimeSubnetId:applicationsSubnetId
+      // dockerBridgeCidr:''
+      // platformReservedDnsIP:''
+      // platformReservedCidr:''
     }
   }
 }
