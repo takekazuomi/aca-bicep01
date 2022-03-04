@@ -12,6 +12,14 @@ module vnet 'vnet.bicep' = {
   }
 }
 
+module log 'log.bicep' = {
+  name: 'log'
+  params: {
+    location: location
+    environmentName: environmentName
+  }
+}
+
 module environment './environment.bicep' = {
   name: 'environment'
   params: {
@@ -19,6 +27,8 @@ module environment './environment.bicep' = {
     environmentName: environmentName
     controlPlaneSubnetId: vnet.outputs.controlPlaneSubnetId
     applicationsSubnetId: vnet.outputs.applocationSubnetId
+    appInsightsName: log.outputs.appInsightsName
+    logAnalyticsWorkspaceName: log.outputs.logAnalyticsWorkspaceName
   }
 }
 
@@ -29,3 +39,4 @@ module acr 'acr.bicep' = {
     namePrefix: prefixName
   }
 }
+
