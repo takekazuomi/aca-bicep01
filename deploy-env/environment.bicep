@@ -53,6 +53,6 @@ resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   }
 }
 
-output location string = location
-output environmentId string = environment.id
+//output location string = location
+//output environmentId string = environment.id
 
