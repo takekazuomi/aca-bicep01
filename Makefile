@@ -1,4 +1,4 @@
-PREFIX_NAME				= omi02
+PREFIX_NAME				= omi01
 RESOURCE_GROUP				= rg-$(PREFIX_NAME)
 LOCATION				= japaneast
 #NAME					= container-apps-$(PREFIX_NAME)
