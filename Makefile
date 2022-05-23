@@ -1,6 +1,6 @@
-PREFIX_NAME				= omi01
-RESOURCE_GROUP				= $(PREFIX_NAME)-rg
-LOCATION				= canadacentral
+PREFIX_NAME				= omi02
+RESOURCE_GROUP				= rg-$(PREFIX_NAME)
+LOCATION				= japaneast
 #NAME					= container-apps-$(PREFIX_NAME)
 CONTAINERAPPS_NAME			= aca-$(PREFIX_NAME)
 ENVIRONMENT_NAME			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/managedEnvironments --query '[0].name' -o tsv)
@@ -16,14 +16,6 @@ CONTAINERAPPS_ID			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-t
 
 help:			## Show this help.
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
-
-setup: 			## initial setup. only for first time
-setup: setup-azcli
-
-setup-azcli:
-	-az extension remove -n containerapp -o none
-	az extension add \
-	--source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.4-py2.py3-none-any.whl
 
 create-rg:		## create resouce group
 	az group create \

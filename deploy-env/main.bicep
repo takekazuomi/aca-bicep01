@@ -18,7 +18,7 @@ module environment './environment.bicep' = {
     location: location
     environmentName: environmentName
     controlPlaneSubnetId: vnet.outputs.controlPlaneSubnetId
-    applicationsSubnetId: vnet.outputs.applocationSubnetId
+    //applicationsSubnetId: vnet.outputs.applocationSubnetId
   }
 }
 

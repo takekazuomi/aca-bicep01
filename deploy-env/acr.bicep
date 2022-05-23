@@ -3,7 +3,7 @@ param location string
 
 var name = '${namePrefix}${uniqueString(resourceGroup().id)}'
 
-resource acr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
+resource acr 'Microsoft.ContainerRegistry/registries@2021-12-01-preview' = {
   name: name
   location: location
   sku: {
