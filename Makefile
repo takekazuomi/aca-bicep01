@@ -1,8 +1,8 @@
 PREFIX_NAME				= omi01
-RESOURCE_GROUP				= $(PREFIX_NAME)-rg
-LOCATION				= canadacentral
+RESOURCE_GROUP				= rg-$(PREFIX_NAME)
+LOCATION				= japaneast
 #NAME					= container-apps-$(PREFIX_NAME)
-CONTAINERAPPS_NAME			= $(PREFIX_NAME)-container-apps2
+CONTAINERAPPS_NAME			= aca-$(PREFIX_NAME)
 ENVIRONMENT_NAME			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/managedEnvironments --query '[0].name' -o tsv)
 #ENVIRONMENT_ID				?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/managedEnvironments --query '[0].id' -o tsv)
 CONTAINERAPPS_ID			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-type Microsoft.App/containerApps --query '[0].id' -o tsv)
@@ -16,14 +16,6 @@ CONTAINERAPPS_ID			?= $(shell az resource list -g $(RESOURCE_GROUP) --resource-t
 
 help:			## Show this help.
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
-
-setup: 			## initial setup. only for first time
-setup: setup-azcli
-
-setup-azcli:
-	az extension show -n containerapp -o none || \
-	az extension add --upgrade \
-	--source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.2-py2.py3-none-any.whl
 
 create-rg:		## create resouce group
 	az group create \
@@ -39,9 +31,17 @@ deploy-environment:	## deploy environment
 deploy-apps-demo:	## deploy demo app
 	az deployment group create -g $(RESOURCE_GROUP) -f ./deploy-app/main.bicep \
 	-p \
-	containerAppName=$(CONTAINERAPPS_NAME) \
+	containerAppName=$(CONTAINERAPPS_NAME)-demo \
 	environmentName=$(ENVIRONMENT_NAME) \
 	containerImage=mcr.microsoft.com/azuredocs/containerapps-helloworld:latest \
+	containerPort=80
+
+deploy-apps-nginx-demo:	## deploy nginx demo app
+	az deployment group create -g $(RESOURCE_GROUP) -f ./deploy-app/main.bicep \
+	-p \
+	containerAppName=$(CONTAINERAPPS_NAME)-nginx \
+	environmentName=$(ENVIRONMENT_NAME) \
+	containerImage=nginx \
 	containerPort=80
 
 clean:

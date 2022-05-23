@@ -3,7 +3,7 @@ param tags object = {}
 param environmentStaticIp string
 param environmentDefaultDomain string
 
-resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
+resource vnet 'Microsoft.Network/virtualNetworks@2021-08-01' existing = {
   name: vNetName
 }
 
