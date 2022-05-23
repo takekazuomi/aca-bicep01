@@ -5,18 +5,20 @@ param location string = resourceGroup().location
 param controlPlaneSubnetId string
 param applicationsSubnetId string
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: logAnalyticsWorkspaceName
   location: location
-  properties: any({
+  properties: {
     retentionInDays: 30
-    features: {
-      searchVersion: 1
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery:'Enabled'
+    workspaceCapping: {
+      dailyQuotaGb: 10
     }
     sku: {
       name: 'PerGB2018'
     }
-  })
+  }
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
